@@ -1,0 +1,8 @@
+MTY-LatiniaInformix=10.27.22.178:9088
+PUB-Interfactura=bancoppelpprep.interfactura.com:443
+PUB-wsdocumentInterfactura=wsdocumentosbancoppelpprep.interfactura.com:433
+CLN-WSRSAHardToken=10.26.215.178:8180
+AWS-RabbitMQ=b-5470ff04-6bd4-4920-b85c-ed04821bfa14.mq.us-east-1.amazonaws.com:5671
+MTY-DBAresQADB=10.27.22.212:11625
+MTY-DBAresQASSH=10.27.22.212:22
+AWS-RedisQA=clustercfg.bcpl-elc-qa-redis-ares-cache-cluster.yffhpc.use1.cache.amazonaws.com:443

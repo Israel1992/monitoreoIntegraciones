@@ -11,7 +11,7 @@ RUN mkdir /home/monitor
 COPY monitor /home/monitor
 
 # Convertir múltiples archivos a formato Unix usando un bucle
-RUN for file in /home/monitor/monitorVPN.sh /home/monitor/realtime.sh /home/monitor/start.sh /home/monitor/reset.sh /home/monitor/paramsApifiDEV /home/monitor/paramsApoloQA /home/monitor/paramsAresQA; do \
+RUN for file in /home/monitor/monitorVPN.sh /home/monitor/paramsApifiDEV /home/monitor/paramsApoloQA /home/monitor/paramsApoloPROD /home/monitor/paramsApoloInt /home/monitor/paramsAforeDEV /home/monitor/paramsAresQA; do \
         sed -i 's/\r$//' "$file"; \
     done
 
