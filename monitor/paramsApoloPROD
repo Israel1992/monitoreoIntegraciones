@@ -48,5 +48,3 @@ MTY-Interfactura=10.27.204.14:8080
 CLN-Interfactura=10.26.213.48:8080
 PUB-onbase=bancoppel.hylandcloud.com:443
 PUB-incode=saas-api.incodesmile.com:443
-
-checar el balancedor, validar la configuración de los pods

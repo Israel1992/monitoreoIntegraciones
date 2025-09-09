@@ -44,3 +44,4 @@ PUB-ApigeePUB2=nonprod.bancoppel.space:443
 PUB-Interfactura=bancoppelpprep.interfactura.com:443
 PUB-ApigeePUBL=qa-apigee.bancoppel.space:443
 PUB-wsdocumentInterfactura=http://wsdocumentosbancoppelpprep.interfactura.com/?wsdl:433 
+PUB-incode=saas-api.incodesmile.com:443
