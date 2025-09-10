@@ -1,25 +1,34 @@
 FROM alpine:latest
 
-# Actualizar la lista de paquetes e instalar las dependencias
+# Actualizar la lista de paquetes e instalar dependencias
 RUN apk update && \
-    apk add --no-cache inetutils-telnet bash curl vim nano
+    apk add --no-cache \
+        inetutils-telnet \
+        bash \
+        curl \
+        vim \
+        nano \
+        postgresql-client \
+        python3 \
+        py3-pip && \
+    pip3 install --no-cache-dir awscli
 
 # Crear el directorio monitor en el home del usuario
-RUN mkdir /home/monitor
+RUN mkdir -p /home/monitor
 
 # Copiar la carpeta monitor y su contenido al directorio /home/monitor
 COPY monitor /home/monitor
 
 # Convertir múltiples archivos a formato Unix usando un bucle
-RUN for file in /home/monitor/monitorVPN.sh /home/monitor/paramsApifiDEV /home/monitor/paramsApoloQA /home/monitor/paramsApoloPROD /home/monitor/paramsApoloInt /home/monitor/paramsAforeDEV /home/monitor/paramsAresQA; do \
+RUN for file in /home/monitor/monitorVPN.sh \
+                /home/monitor/paramsApifiDEV \
+                /home/monitor/paramsApoloQA \
+                /home/monitor/paramsApoloPROD \
+                /home/monitor/paramsApoloInt \
+                /home/monitor/paramsAforeDEV \
+                /home/monitor/paramsAresQA; do \
         sed -i 's/\r$//' "$file"; \
     done
-
-# Opcional: Copiar archivos de tu aplicación a la imagen
-# COPY . /app
-
-# Opcional: Exponer puertos si tu aplicación lo requiere
-# EXPOSE 8080
 
 # Comando por defecto al iniciar el contenedor
 CMD ["/bin/sh"]
