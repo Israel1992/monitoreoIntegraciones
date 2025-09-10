@@ -10,8 +10,8 @@ RUN apk update && \
         nano \
         postgresql-client \
         python3 \
-        py3-pip && \
-    pip3 install --no-cache-dir awscli
+        py3-pip \
+        aws-cli
 
 # Crear el directorio monitor en el home del usuario
 RUN mkdir -p /home/monitor
