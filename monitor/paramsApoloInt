@@ -1,7 +1,7 @@
 AWS-RedisDEV=master.bcpl-elc-int-redis-apolo-cache-cluster.aike87.use1.cache.amazonaws.com:6379
 AWS-yugabytedev=11.77.77.5:5433
 AWS-Pinpoint=email-smtp.us-east-1.amazonaws.com:587
-AWS-webmethodsApoloQA=10.209.29.180:5555
+AWS-webmethodsApoloDEV=10.209.23.555555
 GCP-ApigeeDEVPRIV=10.77.77.5:443
 GCP-ApigeeQAPRIV=10.77.78.6:443
 GCP-Strikeriron2=10.181.125.4:443
