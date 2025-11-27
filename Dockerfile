@@ -26,6 +26,8 @@ RUN for file in /home/monitor/monitorVPN.sh \
                 /home/monitor/paramsApoloPROD \
                 /home/monitor/paramsApoloInt \
                 /home/monitor/paramsAforeDEV \
+                /home/monitor/paramsAforeQA \
+                /home/monitor/paramsAforePROD \
                 /home/monitor/paramsAresQA; do \
         sed -i 's/\r$//' "$file"; \
     done

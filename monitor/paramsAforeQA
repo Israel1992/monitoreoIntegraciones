@@ -1,10 +1,9 @@
 webmethodQA=10.209.29.180:5555
 incode39=34.239.208.39:443
 incode49=34.200.163.49:443
-aforeglobal=10.30.118.37:443
-yugabyte= afore-nlb-qa-onboarding-yb-5f6fab536b395302.elb.us-east-1.amazonaws.com:5433
+aforeglobal=10.30.118.37:5432
+yugabyte=afore-nlb-qa-onboarding-yb-5f6fab536b395302.elb.us-east-1.amazonaws.com:5433
 wsprocesar22=172.21.67.22:443
-wsprocesar37=192.168.60.37:443
 belvo=sandbox.belvo.com:443
 briteverify=bpi.briteverify.com:443
 ine=pruebas.derfe.ine.mx:443
