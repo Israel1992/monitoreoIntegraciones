@@ -1,0 +1,14 @@
+webmethodMWS=10.160.17.212:8595
+webmethodJMS=10.160.17.228:5565
+incode39=34.239.208.39:443
+incode49=34.200.163.49:443
+aforeglobal=10.28.224.117:443
+yugabyte=afore-lb-prod-onboarding-yba-db-abd0cf2ca6589dd1.elb.us-east-1.amazonaws.com:5433
+wsprocesar=wsprocesar.com.mx:443
+belvo=sandbox.belvo.com:443
+briteverify=bpi.briteverify.com:443
+ine1=172.30.2.11:443
+ine2=172.31.2.10:443
+renapo=webs.curp.gob.mx:443
+redis=clustercfg.afore-elc-prod-redis-onb-cache-cluster.yu9sr5.use1.cache.amazonaws.com:6379
+autaf=10.26.216.56:443
