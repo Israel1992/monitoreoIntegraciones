@@ -1,11 +1,10 @@
 #!/bin/bash
 
 # --- CONFIGURACIÓN ---
+# Forzamos la zona horaria de CDMX para todo el script
+export TZ="America/Mexico_City"
 logfile="monitoreo.log"
 params="paramsAforePROD"
-# Ajuste de horas: Si tu servidor está en UTC y quieres hora CDMX, restamos 6.
-# Si el desfase cambia, solo ajusta el número.
-HORA_AJUSTE="6 hours ago"
 # ---------------------
 
 declare -A hostlist
@@ -14,7 +13,7 @@ function getHost {
     unset hostlist
     declare -g -A hostlist
     if [ ! -f "$params" ]; then
-        echo "$(date -d "$HORA_AJUSTE" '+%Y-%m-%d %H:%M:%S') - ERROR: Archivo $params no encontrado" >> "$logfile"
+        echo "$(date '+%Y-%m-%d %H:%M:%S') - ERROR: Archivo $params no encontrado" >> "$logfile"
         return
     fi
 
@@ -33,16 +32,13 @@ function connect_and_log {
     local host_info=${hostlist[$host_name]}
     local host=${host_info%:*}
     local port=${host_info##*:}
-    # Aplicamos el ajuste de hora aquí
-    local ts=$(date -d "$HORA_AJUSTE" '+%Y-%m-%d %H:%M:%S')
+    local ts=$(date '+%Y-%m-%d %H:%M:%S')
 
-    # Intentos de conexión
-    # El 2>/dev/null final evita que los mensajes de "Terminated" salgan al nohup.out
-    {
-        timeout 3 bash -c "cat < /dev/null > /dev/tcp/$host/$port" || \
-        timeout 3 curl -sk "https://$host:$port" >/dev/null
-    } >/dev/null 2>&1
-
+    # Intentamos conexión silenciosa
+    # Probamos /dev/tcp y si falla probamos curl
+    timeout 3 bash -c "cat < /dev/null > /dev/tcp/$host/$port" 2>/dev/null || \
+    timeout 3 curl -sk "https://$host:$port" >/dev/null 2>&1
+    
     if [ $? -eq 0 ]; then
         echo "$ts - OK    $host_name ($host:$port)" >> "$logfile"
     else
@@ -50,11 +46,15 @@ function connect_and_log {
     fi
 }
 
+# Reiniciar el log cada vez que inicies el script (opcional)
+echo "--- Iniciando monitoreo: $(date) ---" >> "$logfile"
+
 while true; do
     getHost
     if [ ${#hostlist[@]} -eq 0 ]; then
-        echo "$(date -d "$HORA_AJUSTE" '+%Y-%m-%d %H:%M:%S') - Alerta: No hay hosts" >> "$logfile"
+        echo "$(date '+%Y-%m-%d %H:%M:%S') - Alerta: No hay hosts en $params" >> "$logfile"
     else
+        # Ordenar y procesar
         for host_name in $(printf "%s\n" "${!hostlist[@]}" | sort); do
             connect_and_log "$host_name"
         done
