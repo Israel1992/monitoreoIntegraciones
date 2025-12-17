@@ -12,3 +12,4 @@ ine2=172.31.2.10:443
 renapo=webs.curp.gob.mx:443
 redis=clustercfg.afore-elc-prod-redis-onb-cache-cluster.yu9sr5.use1.cache.amazonaws.com:6379
 autaf=10.26.216.56:443
+autaf8=10.26.216.56:8443
