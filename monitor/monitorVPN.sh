@@ -13,19 +13,21 @@ function getHost {
     unset hostlist
     declare -g -A hostlist
 
-    if [[ ! -f "$params" ]]; then
+    if [ ! -f "$params" ]; then
         echo "$(date '+%Y-%m-%d %H:%M:%S') - ERROR: Archivo $params no encontrado" >> "$logfile"
         return
     fi
 
-    # El '|| [[ -n "$line" ]]' permite leer la última línea si no tiene salto de línea
-    while IFS='=' read -r name ip || [[ -n "$name" ]]; do
+    # Se usa [ -n "$name" ] para procesar la última línea si no tiene salto de línea
+    while IFS='=' read -r name ip || [ -n "$name" ]; do
         # Limpieza de espacios y saltos de línea de Windows (\r)
-        name=$(echo "$name" | tr -d '\r' | xargs)
-        ip=$(echo "$ip" | tr -d '\r' | xargs)
+        name=$(echo "$name" | tr -d '\r' | xargs 2>/dev/null)
+        ip=$(echo "$ip" | tr -d '\r' | xargs 2>/dev/null)
 
         # Saltar líneas vacías o comentarios
-        [[ -z "$name" || "$name" == #* ]] && continue
+        if [ -z "$name" ] || [[ "$name" == "#"* ]]; then
+            continue
+        fi
         
         hostlist["$name"]="$ip"
     done < "$params"
@@ -41,7 +43,7 @@ function connect_and_log {
     local port=${host_info##*:}
     local ts=$(date '+%Y-%m-%d %H:%M:%S')
 
-    # Intento 1: Bash nativo (rápido) | Intento 2: Curl (para servicios HTTPS)
+    # Intento 1: Bash nativo | Intento 2: Curl (insecure para saltar temas de certificados)
     if timeout 3 bash -c "cat < /dev/null > /dev/tcp/$host/$port" 2>/dev/null || \
        timeout 3 curl -sk "https://$host:$port" >/dev/null 2>&1; then
         echo "$ts - OK    $host_name ($host:$port)" >> "$logfile"
