@@ -21,7 +21,8 @@ function connect_and_log {
 
     ts=$(date '+%Y-%m-%d %H:%M:%S')
 
-    if timeout 3 nc -z "$host" "$port"; then
+    if timeout 3 telnet "$host" "$port" >/dev/null 2>&1 || \
+       timeout 3 curl -vk "https://$host:$port" >/dev/null 2>&1; then
         echo "$ts - OK    $host_name ($host:$port)" >> "$logfile"
     else
         echo "$ts - ERROR $host_name ($host:$port)" >> "$logfile"
