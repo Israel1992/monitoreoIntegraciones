@@ -1,73 +1,64 @@
 #!/bin/bash
 
 # --- CONFIGURACIÓN ---
-export TZ="America/Mexico_City"
 logfile="monitoreo.log"
 params="paramsAforePROD"
+# Ajuste de horas: Si tu servidor está en UTC y quieres hora CDMX, restamos 6.
+# Si el desfase cambia, solo ajusta el número.
+HORA_AJUSTE="6 hours ago"
 # ---------------------
 
 declare -A hostlist
 
-# Función para cargar los hosts del archivo
 function getHost {
     unset hostlist
     declare -g -A hostlist
-
     if [ ! -f "$params" ]; then
-        echo "$(date '+%Y-%m-%d %H:%M:%S') - ERROR: Archivo $params no encontrado" >> "$logfile"
+        echo "$(date -d "$HORA_AJUSTE" '+%Y-%m-%d %H:%M:%S') - ERROR: Archivo $params no encontrado" >> "$logfile"
         return
     fi
 
-    # Se usa [ -n "$name" ] para procesar la última línea si no tiene salto de línea
     while IFS='=' read -r name ip || [ -n "$name" ]; do
-        # Limpieza de espacios y saltos de línea de Windows (\r)
         name=$(echo "$name" | tr -d '\r' | xargs 2>/dev/null)
         ip=$(echo "$ip" | tr -d '\r' | xargs 2>/dev/null)
-
-        # Saltar líneas vacías o comentarios
         if [ -z "$name" ] || [[ "$name" == "#"* ]]; then
             continue
         fi
-        
         hostlist["$name"]="$ip"
     done < "$params"
 }
 
-# Función para probar conexión y registrar log
 function connect_and_log {
     local host_name=$1
     local host_info=${hostlist[$host_name]}
-    
-    # Separar IP y Puerto (maneja formato ip:puerto)
     local host=${host_info%:*}
     local port=${host_info##*:}
-    local ts=$(date '+%Y-%m-%d %H:%M:%S')
+    # Aplicamos el ajuste de hora aquí
+    local ts=$(date -d "$HORA_AJUSTE" '+%Y-%m-%d %H:%M:%S')
 
-    # Intento 1: Bash nativo | Intento 2: Curl (insecure para saltar temas de certificados)
-    if timeout 3 bash -c "cat < /dev/null > /dev/tcp/$host/$port" 2>/dev/null || \
-       timeout 3 curl -sk "https://$host:$port" >/dev/null 2>&1; then
+    # Intentos de conexión
+    # El 2>/dev/null final evita que los mensajes de "Terminated" salgan al nohup.out
+    {
+        timeout 3 bash -c "cat < /dev/null > /dev/tcp/$host/$port" || \
+        timeout 3 curl -sk "https://$host:$port" >/dev/null
+    } >/dev/null 2>&1
+
+    if [ $? -eq 0 ]; then
         echo "$ts - OK    $host_name ($host:$port)" >> "$logfile"
     else
         echo "$ts - ERROR $host_name ($host:$port)" >> "$logfile"
     fi
 }
 
-# --- CICLO PRINCIPAL ---
 while true; do
     getHost
-
     if [ ${#hostlist[@]} -eq 0 ]; then
-        echo "$(date '+%Y-%m-%d %H:%M:%S') - Alerta: No se cargaron hosts de $params" >> "$logfile"
+        echo "$(date -d "$HORA_AJUSTE" '+%Y-%m-%d %H:%M:%S') - Alerta: No hay hosts" >> "$logfile"
     else
-        # Obtener llaves ordenadas y procesar
-        sorted_keys=$(printf "%s\n" "${!hostlist[@]}" | sort)
-        for host_name in $sorted_keys; do
+        for host_name in $(printf "%s\n" "${!hostlist[@]}" | sort); do
             connect_and_log "$host_name"
         done
     fi
-
     echo "------------------------------------------------------------" >> "$logfile"
-    
-    # Esperar 5 minutos para la siguiente vuelta
     sleep 300
 done
