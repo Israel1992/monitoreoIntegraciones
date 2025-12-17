@@ -7,9 +7,11 @@ declare -A hostlist
 function getHost {
     hostlist=()
     while IFS='=' read -r name ip; do
+        name=${name//$'\r'/}
+        ip=${ip//$'\r'/}
         [ -z "$name" ] && continue
         hostlist["$name"]="$ip"
-    done < paramsApifiDEV
+    done < paramsAforePROD
 }
 
 function connect_and_log {
