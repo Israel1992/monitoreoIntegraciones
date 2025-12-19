@@ -9,4 +9,4 @@ briteverify=bpi.briteverify.com:443
 ine=pruebas.derfe.ine.mx:443
 renapo=websdes.curp.gob.mx:443
 redis=clustercfg.afore-elc-dev-redis-onb-cache-cluster.avjaep.use1.cache.amazonaws.com:6379
-autaf=cardifcdmx1.bancoppel.io:443
+autaf=10.27.207.142:8443
