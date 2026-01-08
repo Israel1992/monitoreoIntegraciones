@@ -11,7 +11,8 @@ RUN apk update && \
         postgresql-client \
         python3 \
         py3-pip \
-        aws-cli
+        aws-cli \
+        redis
 
 # Crear el directorio monitor en el home del usuario
 RUN mkdir -p /home/monitor
