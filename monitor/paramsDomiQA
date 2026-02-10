@@ -1,0 +1,7 @@
+
+AWS-yugabyteQA=bpcl-yugabyte-nlb-qa-dom-ad58852fa8e5d6f2.elb.us-east1.amazonaws.com:5433
+AWS-RabbitMQQA=b-d8501f2d-f39b-41da-a916-317afca552c1.mq.us-east-1.on.aws:5671
+AWS-RedisQA=replica.bcpl-elc-qa-redis-domi-cache-cluster.evccy8.use1.cache.amazonaws.com:6379
+GCP-ApigeeCoppelPRIV=qa-apigee.coppel.io:443
+CLN-Informix=10.27.22.184:1590
+MTY-Latinia=10.27.22.157:9080

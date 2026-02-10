@@ -1,0 +1,7 @@
+
+AWS-yugabyteDEV=bpcl-yugabyte-nlb-dev-dom-e24f26152b1a4298.elb.us-east-1.amazonaws.com:5433
+AWS-RabbitMQDEV=b-dd2d91f0-eb95-408b-a2bd-34659619dd76.mq.us-east-1.on.aws:5671
+AWS-RedisDEV=master.bcpl-elc-dev-redis-domi-cache-cluster.cy1zif.use1.cache.amazonaws.com:6379
+GCP-ApigeeCoppelPRIV=dev-apigee.coppel.io:443
+CLN-Informix=10.27.22.184:1590
+MTY-Latinia=10.27.22.157:9080
