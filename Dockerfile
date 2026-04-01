@@ -14,6 +14,9 @@ RUN apk update && \
         aws-cli \
         redis
 
+# Para compartir los logs con datadog
+RUN ln -sf /dev/stdout /home/monitor/monitoreo.log
+
 # Crear el directorio monitor en el home del usuario
 RUN mkdir -p /home/monitor
 
