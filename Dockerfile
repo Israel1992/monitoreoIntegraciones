@@ -14,14 +14,14 @@ RUN apk update && \
         aws-cli \
         redis
 
-# Para compartir los logs con datadog
-RUN ln -sf /dev/stdout /home/monitor/monitoreo.log
-
 # Crear el directorio monitor en el home del usuario
 RUN mkdir -p /home/monitor
 
 # Copiar la carpeta monitor y su contenido al directorio /home/monitor
 COPY monitor /home/monitor
+
+# Para compartir los logs con datadog
+RUN ln -sf /dev/stdout /home/monitor/monitoreo.log
 
 # Convertir múltiples archivos a formato Unix usando un bucle
 RUN for file in /home/monitor/monitorVPN.sh \
